@@ -72,8 +72,8 @@ class MainActivity : AppCompatActivity() {
                     lmpDates = lmpDate.toString()
                     //println("this is lmpDates" + "$lmpDates")
                     //textView.setText("" + dayOfMonth + " " + month + ", " + year)
-                    lmpText.text = ("" + dayOfMonth + ". " + month + ". " + year)
-
+                    //lmpText.text = ("" + dayOfMonth + ". " + month + ". " + year)
+                    lmpText.text = ("" + dayOfMonth + ". " + "${lmpDate.month}" + ". " + year)
 
                     val date = LocalDate.now()
                     /*val day = date.dayOfMonth
@@ -81,24 +81,28 @@ class MainActivity : AppCompatActivity() {
                     val gAge = Period.between(
                         date,
                         lmpDate
-                    )                              // gestational age in M and D
+                    )                                                             // gestational age in M and D
 
+
+                    var gAgeDaysTotal: Double = 0.0
                     fun toWeeks() {
                         val gAgeWeeks =
-                            (gAge.months * 30.5 + gAge.days) / 7 * -1            // gestational weeks
+                            (gAge.months * 30.5 + gAge.days) / 7 * -1             // gestational weeks
+                            gAgeDaysTotal = (gAge.months * 30.5 + gAge.days) * -1
+                        val gAgeDaysTotalRound = gAgeDaysTotal.roundToInt()   //  gestational age only days
                         val gAgeWeeksRound =
-                            gAgeWeeks.roundToInt()                     // round gestational weeks
+                            gAgeWeeks.toInt()                                     // round gestational weeks
                         val gAgeDays =
                             (gAge.months * 30.5 + gAge.days) % 7 * -1             // residual gestational days after extracting weeks MAIN !!!
                         val gAgeDaysRound =
-                            gAgeDays.roundToInt()                        // round gestational days
+                            gAgeDays.roundToInt()                                 // round gestational days
                         val gAgeNomberOfMonth =
-                            gAge.months                              // gestational months
+                            gAge.months                                           // gestational months
                         val gAgeNomberOfDays =
-                            gAge.days                                 // gestational days after extration of months
+                            gAge.days                                             // gestational days after extration of months
 
-                        textAge.text = ("$gAgeWeeksRound" + "  weeks" + "  $gAgeDaysRound" + "   days")
-                        println("gestational age is " + " $gAgeWeeksRound" + "  weeks" + "  $gAgeDaysRound" + "   days")
+                        textAgeRight.text = ("$gAgeWeeksRound" + "  weeks" + "  $gAgeDaysRound" + "  days" + "  = " + " $gAgeDaysTotalRound" + " days")
+                        //println("gestational age is " + " $gAgeWeeksRound" + "  weeks" + "  $gAgeDaysRound" + "   days")
                         //println("residual days"+" $gAgeNomberOfDays")
                         //println("residual moths"+" $gAgeNomberOfMonth")
                     }
@@ -112,13 +116,20 @@ class MainActivity : AppCompatActivity() {
                         val edTermPregnancy = lmpDate.plusDays(259)
                         val edTermPregnancyForm =
                             edTermPregnancy.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+                        textEDDRight.text = ("${edd.dayOfMonth}" + " . " + "${edd.month}" + " . " + "${edd.year}")
                         println("edd" + " $eddForm")
                         println("expected date of term pregnancy" + "   $edTermPregnancyForm")
                     }
                     eddCalc()
 
+                    if (gAgeDaysTotal<=0 || gAgeDaysTotal>295){
+                        lmpText.text = ("Please, choose valid LMP")
+                        textAgeRight.text = ("Please, choose valid LMP")
+                        textEDDRight.text = ("Please, choose valid LMP")
+                    }
 
                     println("$date")
+
                     println("$day" + " and " + "$month")
                     println("$gAge")
 

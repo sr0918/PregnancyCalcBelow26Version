@@ -13,7 +13,7 @@
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView"
         app:layout_constraintVertical_bias="0.0"
@@ -45,79 +45,114 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
 
+    <TextView
+        android:id="@+id/lmpText"
+        android:layout_width="0dp"
+        android:layout_height="40sp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/windowpattern"
+        android:gravity="center"
+
+        android:textAlignment="center"
+        android:textColor="#FE0D24AB"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/pickDateBtn"
+        app:layout_constraintStart_toStartOf="@+id/pickDateBtn"
+        app:layout_constraintTop_toBottomOf="@+id/pickDateBtn" />
+
     <Button
         android:id="@+id/pickDateBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/buttonbackground"
         android:fontFamily="serif"
-        android:text="Pick   LMP  DATE"
+        android:gravity="center"
+        android:text="Pick  first  day  of   LMP"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
+        android:textSize="18sp"
         android:textStyle="bold"
-        android:gravity="center"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
-        android:id="@+id/lmpText"
-        android:layout_width="0dp"
-        android:layout_height="35sp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:gravity="center"
-        android:text="FIRST DAY OF LMP "
-        android:textAlignment="center"
-        android:textColor="#FE0D24AB"
-        android:textSize="20sp"
-        android:textStyle="bold"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toTopOf="@+id/pickDateBtn" />
-
-    <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textAgeLeft"
         android:layout_width="0dp"
         android:layout_height="40sp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="92dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/windowpattern"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/windowmain"
         android:fontFamily="serif"
         android:gravity="center"
-        android:text="YOUR GESTATIONAL AGE"
+        android:text="GESTATIONAL AGE"
         android:textColor="#FE0D24AB"
-        android:textSize="12sp"
+        android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/lmpText"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="@+id/lmpText"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/pickDateBtn"
-        app:layout_constraintVertical_bias="0.28" />
+        app:layout_constraintStart_toStartOf="@+id/lmpText"
+        app:layout_constraintTop_toBottomOf="@+id/lmpText" />
 
     <TextView
-        android:id="@+id/textAge"
+        android:id="@+id/textAgeRight"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/windowpattern"
         android:gravity="center"
         android:textAlignment="center"
         android:textColor="#FE0D24AB"
+        android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toTopOf="@+id/textView2" />
+        app:layout_constraintEnd_toEndOf="@+id/textAgeLeft"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textAgeLeft"
+        app:layout_constraintTop_toBottomOf="@+id/textAgeLeft" />
+
+    <TextView
+        android:id="@+id/textEDDLeft"
+        android:layout_width="0dp"
+        android:layout_height="40sp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/windowmain"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:text="EDD"
+        android:textColor="#FE0D24AB"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/textAgeRight"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textAgeRight"
+        app:layout_constraintTop_toBottomOf="@+id/textAgeRight" />
+
+    <TextView
+        android:id="@+id/textEDDRight"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/windowpattern"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="#FE0D24AB"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/textEDDLeft"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/textEDDLeft"
+        app:layout_constraintTop_toBottomOf="@+id/textEDDLeft" />
+
+    <TextView
+        android:id="@+id/temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintTop_toBottomOf="@+id/textEDDRight"
+        tools:layout_editor_absoluteX="143dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

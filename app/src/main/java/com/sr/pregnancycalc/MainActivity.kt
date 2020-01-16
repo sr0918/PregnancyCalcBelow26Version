@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                     //println("this is lmpDates" + "$lmpDates")
                     //textView.setText("" + dayOfMonth + " " + month + ", " + year)
                     //lmpText.text = ("" + dayOfMonth + ". " + month + ". " + year)
-                    lmpText.text = ("" + dayOfMonth + ". " + "${lmpDate.month}" + ". " + year)
+                    lmpText.text = ("" + dayOfMonth + ". " + "${lmpDate.month}" + " . " + year)
 
                     val date = LocalDate.now()
                     /*val day = date.dayOfMonth
@@ -117,8 +117,9 @@ class MainActivity : AppCompatActivity() {
                         val edTermPregnancyForm =
                             edTermPregnancy.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
                         textEDDRight.text = ("${edd.dayOfMonth}" + " . " + "${edd.month}" + " . " + "${edd.year}")
-                        println("edd" + " $eddForm")
-                        println("expected date of term pregnancy" + "   $edTermPregnancyForm")
+                        textTermRight.text = ("${edTermPregnancy.dayOfMonth}" + " . " + "${edTermPregnancy.month}" + " . " + "${edTermPregnancy.year}")
+                        //println("edd" + " $eddForm")
+                        //println("expected date of term pregnancy" + "   $edTermPregnancyForm")
                     }
                     eddCalc()
 
@@ -126,6 +127,7 @@ class MainActivity : AppCompatActivity() {
                         lmpText.text = ("Please, choose valid LMP")
                         textAgeRight.text = ("Please, choose valid LMP")
                         textEDDRight.text = ("Please, choose valid LMP")
+                        textTermRight.text = ("Please, choose valid LMP")
                     }
 
                     println("$date")

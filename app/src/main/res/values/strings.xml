@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">PregnancyCalc</string>
+    <string name="starttext">startText</string>
+    <string name="pregnancy_dates_calculator">PREGNANCY DATES CALCULATOR</string>
+    <string name="pick_the_first_day_of_lmp">Pick the first day of LMP</string>
+    <string name="gestational_age">GESTATIONAL AGE</string>
+    <string name="edd_40_gw">EDD (40 GW)</string>
+    <string name="full_term_37_gw_from">FULL-TERM (37 GW) from</string>
+    <string name="pregnancy_age_calculator">PREGNANCY AGE CALCULATOR</string>
 </resources>

@@ -43,47 +43,34 @@ class MainActivity : AppCompatActivity() {
                         dialogInterface.dismiss()
                         editor.putBoolean("firstStart", false)
                         editor.apply()
-
                     })
                 .setNegativeButton("EXIT", { dialogInterface: DialogInterface, i: Int ->
                     finish()
                 })
                 .show()
         }
-
         // END of first time disclaimer //
 
         // create calender dialog and calculate the dates  //
         var lmpDates = ""
-        /*val current = LocalDate.now()*/
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
 
         pickDateBtn.setOnClickListener {
-
-            val dpd = DatePickerDialog(
+                val dpd = DatePickerDialog(
                 this,
                 DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-
                     val month = month + 1
                     val lmpDate = LocalDate.of(year, month, dayOfMonth)
                     lmpDates = lmpDate.toString()
-                    //println("this is lmpDates" + "$lmpDates")
-                    //textView.setText("" + dayOfMonth + " " + month + ", " + year)
-                    //lmpText.text = ("" + dayOfMonth + ". " + month + ". " + year)
                     lmpText.text = ("" + dayOfMonth + ". " + "${lmpDate.month}" + " . " + year)
-
                     val date = LocalDate.now()
-                    /*val day = date.dayOfMonth
-                    val month = date.monthValue*/
                     val gAge = Period.between(
                         date,
                         lmpDate
-                    )                                                             // gestational age in M and D
-
-
+                    )
                     var gAgeDaysTotal: Double = 0.0
                     fun toWeeks() {
                         val gAgeWeeks =
@@ -96,30 +83,16 @@ class MainActivity : AppCompatActivity() {
                             (gAge.months * 30.5 + gAge.days) % 7 * -1             // residual gestational days after extracting weeks MAIN !!!
                         val gAgeDaysRound =
                             gAgeDays.roundToInt()                                 // round gestational days
-                        val gAgeNomberOfMonth =
-                            gAge.months                                           // gestational months
-                        val gAgeNomberOfDays =
-                            gAge.days                                             // gestational days after extration of months
-
                         textAgeRight.text = ("$gAgeWeeksRound" + "  weeks" + "  $gAgeDaysRound" + "  days" + "  = " + " $gAgeDaysTotalRound" + " days")
-                        //println("gestational age is " + " $gAgeWeeksRound" + "  weeks" + "  $gAgeDaysRound" + "   days")
-                        //println("residual days"+" $gAgeNomberOfDays")
-                        //println("residual moths"+" $gAgeNomberOfMonth")
-                    }
+                        }
                     toWeeks()
-
                     fun eddCalc() {
-
                         val edd = lmpDate.plusDays(280)
-                        val eddForm =
-                            edd.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))  //formated
                         val edTermPregnancy = lmpDate.plusDays(259)
-                        val edTermPregnancyForm =
+//                        val edTermPregnancyForm =
                             edTermPregnancy.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
                         textEDDRight.text = ("${edd.dayOfMonth}" + " . " + "${edd.month}" + " . " + "${edd.year}")
                         textTermRight.text = ("${edTermPregnancy.dayOfMonth}" + " . " + "${edTermPregnancy.month}" + " . " + "${edTermPregnancy.year}")
-                        //println("edd" + " $eddForm")
-                        //println("expected date of term pregnancy" + "   $edTermPregnancyForm")
                     }
                     eddCalc()
 
@@ -129,27 +102,12 @@ class MainActivity : AppCompatActivity() {
                         textEDDRight.text = ("Please, choose valid LMP")
                         textTermRight.text = ("Please, choose valid LMP")
                     }
-
-                    println("$date")
-
-                    println("$day" + " and " + "$month")
-                    println("$gAge")
-
-                    //////////////////////////////////////////////////////////////////////////////////
-
-
-                    //////////////////////////////////////////////////////////////////////////////////
                 },
                 year,
                 month,
                 day
             )
             dpd.show()
-
-
-            //                 //
-
-
         }
     }
 }

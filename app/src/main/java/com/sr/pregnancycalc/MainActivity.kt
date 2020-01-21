@@ -3,21 +3,20 @@ package com.sr.pregnancycalc
 import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import java.time.LocalDate
-import java.time.Period
-import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.math.roundToInt
 
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -49,10 +48,8 @@ class MainActivity : AppCompatActivity() {
                 })
                 .show()
         }
-        // END of first time disclaimer //
-
         // create calender dialog and calculate the dates  //
-        var lmpDates = ""
+
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
@@ -63,40 +60,34 @@ class MainActivity : AppCompatActivity() {
                 this,
                 DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                     val month = month + 1
-                    val lmpDate = LocalDate.of(year, month, dayOfMonth)
-                    lmpDates = lmpDate.toString()
-                    lmpText.text = ("" + dayOfMonth + ". " + "${lmpDate.month}" + " . " + year)
-                    val date = LocalDate.now()
-                    val gAge = Period.between(
-                        date,
-                        lmpDate
-                    )
-                    var gAgeDaysTotal: Double = 0.0
-                    fun toWeeks() {
-                        val gAgeWeeks =
-                            (gAge.months * 30.5 + gAge.days) / 7 * -1             // gestational weeks
-                            gAgeDaysTotal = (gAge.months * 30.5 + gAge.days) * -1
-                        val gAgeDaysTotalRound = gAgeDaysTotal.roundToInt()   //  gestational age only days
-                        val gAgeWeeksRound =
-                            gAgeWeeks.toInt()                                     // round gestational weeks
-                        val gAgeDays =
-                            (gAge.months * 30.5 + gAge.days) % 7 * -1             // residual gestational days after extracting weeks MAIN !!!
-                        val gAgeDaysRound =
-                            gAgeDays.roundToInt()                                 // round gestational days
-                        textAgeRight.text = ("$gAgeWeeksRound" + "  weeks" + "  $gAgeDaysRound" + "  days" + "  = " + " $gAgeDaysTotalRound" + " days")
-                        }
-                    toWeeks()
-                    fun eddCalc() {
-                        val edd = lmpDate.plusDays(280)
-                        val edTermPregnancy = lmpDate.plusDays(259)
-//                        val edTermPregnancyForm =
-                            edTermPregnancy.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
-                        textEDDRight.text = ("${edd.dayOfMonth}" + " . " + "${edd.month}" + " . " + "${edd.year}")
-                        textTermRight.text = ("${edTermPregnancy.dayOfMonth}" + " . " + "${edTermPregnancy.month}" + " . " + "${edTermPregnancy.year}")
-                    }
-                    eddCalc()
+                    val months = arrayListOf("January", "February", "March","April", "May", "June", "July", "August", "September", "October", "November", "December")
 
-                    if (gAgeDaysTotal<=0 || gAgeDaysTotal>295){
+                    val choice = Date(year - 1900, month -1, dayOfMonth)
+                    val today = Date()
+                    val difference = today.getTime() - choice.getTime()
+                    val gAgeDaysTotsl = difference/ (1000 * 3600 * 24)
+                    val gAgeWeeks = gAgeDaysTotsl/7.toDouble()
+                    val gAgeWeeksRound = gAgeWeeks.toInt()
+                    val gAgeDays = (gAgeDaysTotsl-(gAgeWeeksRound*7)).toInt()
+
+                    val edd = Date(year - 1900, month -1,dayOfMonth + 280)
+                    //var eddMonth = edd.month
+                    val term = Date(year - 1900, month -1,dayOfMonth + 259)
+
+                    val eddMInd = edd.month
+                    val eddMName = months[eddMInd]
+                    val eddYName = edd.year%100
+                    val termMInd = term.month
+                    val termMName = months[termMInd]
+                    val termYName = term.year%100
+                    val lmpMonthName = months[month-1]
+
+                    lmpText.text = ("" + dayOfMonth + ". " + "$lmpMonthName" + " . " + year)
+                    textAgeRight.text = ("$gAgeWeeksRound" + "  weeks" + "  $gAgeDays" + "  days" + "  = " + " $gAgeDaysTotsl" + " days")
+                    textEDDRight.text = ("${edd.date}" + " . " + "$eddMName" + " . " + "20$eddYName")
+                    textTermRight.text = ("${term.date}" + " . " + "$termMName" + " . " + "20$termYName")
+
+                    if (gAgeDaysTotsl<=0 || gAgeDaysTotsl>295){
                         lmpText.text = ("Please, choose valid LMP")
                         textAgeRight.text = ("Please, choose valid LMP")
                         textEDDRight.text = ("Please, choose valid LMP")

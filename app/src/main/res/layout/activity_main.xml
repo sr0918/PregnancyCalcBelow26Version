@@ -10,6 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:alpha="0.4"
+        android:contentDescription="@string/starttext"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -17,8 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/imageone"
-        android:contentDescription="@string/starttext" />
+        app:srcCompat="@drawable/imageone" />
 
     <TextView
         android:id="@+id/textView"
@@ -60,7 +60,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:background="@drawable/buttonbackground"
         android:fontFamily="serif"
@@ -79,7 +79,7 @@
         android:id="@+id/textAgeLeft"
         android:layout_width="0dp"
         android:layout_height="40sp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/windowmain"
         android:fontFamily="serif"
         android:gravity="center"
@@ -112,7 +112,7 @@
         android:id="@+id/textEDDLeft"
         android:layout_width="0dp"
         android:layout_height="40sp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/windowmain"
         android:fontFamily="serif"
         android:gravity="center"
@@ -145,7 +145,7 @@
         android:id="@+id/textTermLeft"
         android:layout_width="0dp"
         android:layout_height="40sp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/windowmain"
         android:fontFamily="serif"
         android:gravity="center"
@@ -173,5 +173,28 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/textEDDLeft"
         app:layout_constraintTop_toBottomOf="@+id/textTermLeft" />
+
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="0dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/linkBtn"
+        app:layout_constraintEnd_toStartOf="@+id/linkBtn"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/linkBtn"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/linkBtn"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/web_hi_res_512"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textTermRight"
+        app:layout_constraintVertical_bias="0.835" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

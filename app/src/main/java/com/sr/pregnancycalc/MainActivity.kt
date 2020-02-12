@@ -2,8 +2,11 @@ package com.sr.pregnancycalc
 
 import android.app.DatePickerDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
+import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.RequiresApi
@@ -21,20 +24,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
+
         //   first time disclaimer //
 
         val prefs: SharedPreferences = getSharedPreferences("prefs", MODE_PRIVATE)
-        var firstStart = prefs.getBoolean("firstStart", true)
+        val firstStart = prefs.getBoolean("firstStart", true)
         val editor = prefs.edit()
         if (firstStart) {
             val builder = android.app.AlertDialog.Builder(this)
                 .setMessage(
-                    "All information contained in and produced by the Pregnancy Dates Calculator is provided for educational purposes only. This information should not be used for the diagnosis or treatment of any health problem or disease. This information is not intended to replace clinical judgment or guide individual patient care in any manner.\n" +
+                    "All information contained in and produced by the Pregnancy Age Calculator is provided for educational purposes only. This information should not be used for the diagnosis or treatment of any health problem or disease. This information is not intended to replace clinical judgment or guide individual patient care in any manner.\n" +
                             "The User is hereby notified that the information contained herein may not meet the user’s needs.\n" +
                             "The User of this software assumes sole responsibility for any decisions made or actions taken based on the information contained in the application.\n" +
-                            "Neither the system’s authors nor any other party involved in the preparation, publication or distribution of the Pregnancy Dates Calculator shall be liable for any special, consequential, or exemplary damages resulting in whole or part from any User’s use of or reliance upon this system and the information contained within.\n" +
+                            "Neither the author nor any other party involved in the preparation, publication or distribution of the Pregnancy Age Calculator shall be liable for any special, consequential, or exemplary damages resulting in whole or part from any User’s use of or reliance upon this system and the information contained within.\n" +
                             "The publisher and developer disclaim all warranties regarding such information whether express or implied, including any warranty as to the quality, accuracy, currency or suitability of this information for any particular purpose.\n" +
-                            "By using the Pregnancy Dates Calculator, documentation and/or any software found therein, the User agrees to abide by United States and International copyright laws and all other applicable laws involving copyright.\n"
+                            "By using the Pregnancy Age Calculator, documentation and/or any software found therein, the User agrees to abide by United States and International copyright laws and all other applicable laws involving copyright.\n"
                 )
                 .setPositiveButton(
                     "Agree and Proceed",
@@ -48,6 +52,8 @@ class MainActivity : AppCompatActivity() {
                 })
                 .show()
         }
+
+
         // create calender dialog and calculate the dates  //
 
         val c = Calendar.getInstance()
@@ -56,38 +62,53 @@ class MainActivity : AppCompatActivity() {
         val day = c.get(Calendar.DAY_OF_MONTH)
 
         pickDateBtn.setOnClickListener {
-                val dpd = DatePickerDialog(
+            val dpd = DatePickerDialog(
                 this,
                 DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                     val month = month + 1
-                    val months = arrayListOf("January", "February", "March","April", "May", "June", "July", "August", "September", "October", "November", "December")
+                    val months = arrayListOf(
+                        "January",
+                        "February",
+                        "March",
+                        "April",
+                        "May",
+                        "June",
+                        "July",
+                        "August",
+                        "September",
+                        "October",
+                        "November",
+                        "December"
+                    )
 
-                    val choice = Date(year - 1900, month -1, dayOfMonth)
+                    val choice = Date(year - 1900, month - 1, dayOfMonth)
                     val today = Date()
                     val difference = today.getTime() - choice.getTime()
-                    val gAgeDaysTotsl = difference/ (1000 * 3600 * 24)
-                    val gAgeWeeks = gAgeDaysTotsl/7.toDouble()
+                    val gAgeDaysTotsl = difference / (1000 * 3600 * 24)
+                    val gAgeWeeks = gAgeDaysTotsl / 7.toDouble()
                     val gAgeWeeksRound = gAgeWeeks.toInt()
-                    val gAgeDays = (gAgeDaysTotsl-(gAgeWeeksRound*7)).toInt()
+                    val gAgeDays = (gAgeDaysTotsl - (gAgeWeeksRound * 7)).toInt()
 
-                    val edd = Date(year - 1900, month -1,dayOfMonth + 280)
-                    //var eddMonth = edd.month
-                    val term = Date(year - 1900, month -1,dayOfMonth + 259)
+                    val edd = Date(year - 1900, month - 1, dayOfMonth + 280)
+                    val term = Date(year - 1900, month - 1, dayOfMonth + 259)
 
                     val eddMInd = edd.month
                     val eddMName = months[eddMInd]
-                    val eddYName = edd.year%100
+                    val eddYName = edd.year % 100
                     val termMInd = term.month
                     val termMName = months[termMInd]
-                    val termYName = term.year%100
-                    val lmpMonthName = months[month-1]
+                    val termYName = term.year % 100
+                    val lmpMonthName = months[month - 1]
 
                     lmpText.text = ("" + dayOfMonth + ". " + "$lmpMonthName" + " . " + year)
-                    textAgeRight.text = ("$gAgeWeeksRound" + "  weeks" + "  $gAgeDays" + "  days" + "  = " + " $gAgeDaysTotsl" + " days")
-                    textEDDRight.text = ("${edd.date}" + " . " + "$eddMName" + " . " + "20$eddYName")
-                    textTermRight.text = ("${term.date}" + " . " + "$termMName" + " . " + "20$termYName")
+                    textAgeRight.text =
+                        ("$gAgeWeeksRound" + "  weeks" + "  $gAgeDays" + "  days" + "  = " + " $gAgeDaysTotsl" + " days")
+                    textEDDRight.text =
+                        ("${edd.date}" + " . " + "$eddMName" + " . " + "20$eddYName")
+                    textTermRight.text =
+                        ("${term.date}" + " . " + "$termMName" + " . " + "20$termYName")
 
-                    if (gAgeDaysTotsl<=0 || gAgeDaysTotsl>295){
+                    if (gAgeDaysTotsl <= 0 || gAgeDaysTotsl > 295) {
                         lmpText.text = ("Please, choose valid LMP")
                         textAgeRight.text = ("Please, choose valid LMP")
                         textEDDRight.text = ("Please, choose valid LMP")
@@ -100,5 +121,31 @@ class MainActivity : AppCompatActivity() {
             )
             dpd.show()
         }
+        // Video banner
+
+        val videoPath:String = "android.resource://" + packageName + "/" + R.raw.tryvideo
+        val uri = Uri.parse(videoPath)
+            videoView.setVideoURI(uri)
+            videoView.start()
+        videoView.setOnPreparedListener(object : MediaPlayer.OnPreparedListener {
+                override fun onPrepared(mediaPlayer: MediaPlayer) {
+                mediaPlayer.isLooping = true
+                }
+            })
+
+
+         // Open link to another app
+        val link:String = "https://play.google.com/store/apps/details?id=com.sr.scrolldata"
+        linkBtn.setOnClickListener {
+           val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+            startActivity(intent)
+        }
+
     }
+         // Restart video after onPause
+    override fun onResume() {
+        super.onResume()
+        videoView.start()
+    }
+
 }

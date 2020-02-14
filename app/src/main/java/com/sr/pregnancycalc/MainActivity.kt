@@ -1,6 +1,8 @@
 package com.sr.pregnancycalc
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
@@ -9,12 +11,36 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.ContextMenu
+import android.view.MenuItem
+import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 @Suppress("DEPRECATION")
+
+var alertDate = "Please, choose valid LMP!"
+var months = arrayListOf(
+"January",
+"February",
+"March",
+"April",
+"May",
+"June",
+"July",
+"August",
+"September",
+"October",
+"November",
+"December"
+)
+var vveeksString = "weeks"
+var dayString = "days"
+var langChosen = "English"
+
+
 class MainActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -23,8 +49,39 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Add langImage to Context Menu
+        registerForContextMenu(langImage)
 
+        // Lang preferences
 
+        val russian = getSharedPreferences("russian", Context.MODE_PRIVATE)
+        val russianOpt = russian.getBoolean("russianOpt", false)
+        val rusiianEditor = russian.edit()
+        if (langChosen == "Russian"){
+            rusiianEditor.putBoolean("russianOpt", true)
+            pickDateBtn.text = "ПЕРВЫЙ ДЕНЬ ПОСЛЕДНИХ МЕСЯЧНЫХ"
+            textAgeLeft.text = "СРОК БЕРЕМЕННОСТИ"
+            textEDDLeft.text = "ПРЕДПОЛАГАЕМАЯ ДАТА РОДОВ (40н)"
+            textTermLeft.text = "ДОНОШЕННАЯ БЕРЕМЕННОСТЬ (37н)"
+            alertDate = "Выберите правильную дату!"
+            months = arrayListOf(
+                "Января",
+                "Февраля",
+                "Марта",
+                "Апреля",
+                "Мая",
+                "Июня",
+                "Июля",
+                "Августа",
+                "Сентября",
+                "Октября",
+                "Ноября",
+                "Декабря"
+            )
+            dayString = "дн"
+            vveeksString = "нед"
+
+        }
         //   first time disclaimer //
 
         val prefs: SharedPreferences = getSharedPreferences("prefs", MODE_PRIVATE)
@@ -61,25 +118,13 @@ class MainActivity : AppCompatActivity() {
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
 
+
         pickDateBtn.setOnClickListener {
             val dpd = DatePickerDialog(
                 this,
                 DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                     val month = month + 1
-                    val months = arrayListOf(
-                        "January",
-                        "February",
-                        "March",
-                        "April",
-                        "May",
-                        "June",
-                        "July",
-                        "August",
-                        "September",
-                        "October",
-                        "November",
-                        "December"
-                    )
+
 
                     val choice = Date(year - 1900, month - 1, dayOfMonth)
                     val today = Date()
@@ -102,17 +147,18 @@ class MainActivity : AppCompatActivity() {
 
                     lmpText.text = ("" + dayOfMonth + ". " + "$lmpMonthName" + " . " + year)
                     textAgeRight.text =
-                        ("$gAgeWeeksRound" + "  weeks" + "  $gAgeDays" + "  days" + "  = " + " $gAgeDaysTotsl" + " days")
+                        ("$gAgeWeeksRound" + "  $vveeksString" + "  $gAgeDays" + "  $dayString" + "  = " + " $gAgeDaysTotsl" + " $dayString")
                     textEDDRight.text =
                         ("${edd.date}" + " . " + "$eddMName" + " . " + "20$eddYName")
                     textTermRight.text =
                         ("${term.date}" + " . " + "$termMName" + " . " + "20$termYName")
 
                     if (gAgeDaysTotsl <= 0 || gAgeDaysTotsl > 295) {
-                        lmpText.text = ("Please, choose valid LMP")
-                        textAgeRight.text = ("Please, choose valid LMP")
-                        textEDDRight.text = ("Please, choose valid LMP")
-                        textTermRight.text = ("Please, choose valid LMP")
+
+                        lmpText.text = (alertDate)
+                        textAgeRight.text = (alertDate)
+                        textEDDRight.text = (alertDate)
+                        textTermRight.text = (alertDate)
                     }
                 },
                 year,
@@ -123,29 +169,75 @@ class MainActivity : AppCompatActivity() {
         }
         // Video banner
 
-        val videoPath:String = "android.resource://" + packageName + "/" + R.raw.tryvideo
+        val videoPath: String = "android.resource://" + packageName + "/" + R.raw.tryvideo
         val uri = Uri.parse(videoPath)
-            videoView.setVideoURI(uri)
-            videoView.start()
+        videoView.setVideoURI(uri)
+        videoView.start()
         videoView.setOnPreparedListener(object : MediaPlayer.OnPreparedListener {
-                override fun onPrepared(mediaPlayer: MediaPlayer) {
+            override fun onPrepared(mediaPlayer: MediaPlayer) {
                 mediaPlayer.isLooping = true
-                }
-            })
+            }
+        })
 
 
-         // Open link to another app
-        val link:String = "https://play.google.com/store/apps/details?id=com.sr.scrolldata"
+        // Open link to another app
+        val link: String = "https://play.google.com/store/apps/details?id=com.sr.scrolldata"
         linkBtn.setOnClickListener {
-           val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
             startActivity(intent)
         }
 
     }
-         // Restart video after onPause
+
+    // Restart video after onPause
     override fun onResume() {
         super.onResume()
         videoView.start()
     }
+    //     Menu Step 2 get method by CTRL+O
+    override fun onCreateContextMenu(
+        menu: ContextMenu?,
+        v: View?,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        menuInflater.inflate(R.menu.lang, menu)
+        super.onCreateContextMenu(menu, v, menuInfo)
+    }
 
+
+    //     Menu Step 3 get method by CTRL+O
+    @SuppressLint("SetTextI18n")
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.russian)
+            langChosen = "Russian"
+            pickDateBtn.text = "ПЕРВЫЙ ДЕНЬ ПОСЛЕДНИХ МЕСЯЧНЫХ"
+            textAgeLeft.text = "СРОК БЕРЕМЕННОСТИ"
+            textEDDLeft.text = "ПРЕДПОЛАГАЕМАЯ ДАТА РОДОВ (40н)"
+            textTermLeft.text = "ДОНОШЕННАЯ БЕРЕМЕННОСТЬ (37н)"
+            alertDate = "Выберите правильную дату!"
+            months = arrayListOf(
+            "Января",
+            "Февраля",
+            "Марта",
+            "Апреля",
+            "Мая",
+            "Июня",
+            "Июля",
+            "Августа",
+            "Сентября",
+            "Октября",
+            "Ноября",
+            "Декабря"
+        )
+            dayString = "дн"
+            vveeksString = "нед"
+
+        /*when (item.itemId) {
+            R.id.english -> println("1")
+             -> pickDateBtn.text = "ПЕРВЫЙ ДЕНЬ ПОСЛЕДНИХ МЕСЯЧНЫХ"
+
+
+        }*/
+        return super.onContextItemSelected(item)
+    }
 }
